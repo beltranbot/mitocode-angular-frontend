@@ -6,19 +6,19 @@
     </mat-form-field>
 </div>
 
-<mat-table [dataSource]="dataSource">
+<mat-table [dataSource]="dataSource" matSort class="mat-elevation-x8">
     <ng-container matColumnDef="idPaciente">
-        <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
         <mat-cell *matCellDef="let row">{{ row.idPaciente }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="nombres">
-        <mat-header-cell *matHeaderCellDef>Nombres</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Nombres</mat-header-cell>
         <mat-cell *matCellDef="let row">{{ row.nombres }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="apellidos">
-        <mat-header-cell *matHeaderCellDef>Apellidos</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Apellidos</mat-header-cell>
         <mat-cell *matCellDef="let row">{{ row.apellidos }}</mat-cell>
     </ng-container>
 
