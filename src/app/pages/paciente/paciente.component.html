@@ -1,5 +1,11 @@
 <router-outlet></router-outlet>
 
+<div class="example-header">
+    <mat-form-field>
+        <input matInput (keyup)="filtrar($event.target.value)" placeholder="Buscar paciente">
+    </mat-form-field>
+</div>
+
 <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="idPaciente">
         <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>

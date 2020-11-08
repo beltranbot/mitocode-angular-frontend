@@ -46,4 +46,8 @@ export class PacienteComponent implements OnInit {
         this.pacienteService.setMensajeCambio('SE ELIMINO');
       });
   }
+
+  filtrar(valor : string) {
+    this.dataSource.filter = valor.trim().toLowerCase();
+  }
 }
