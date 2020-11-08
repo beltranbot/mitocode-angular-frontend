@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Paciente } from 'src/app/_model/paciente';
 import { PacienteService } from 'src/app/_service/paciente.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-paciente-edicion',
@@ -63,20 +64,30 @@ export class PacienteEdicionComponent implements OnInit {
 
     if (this.edicion) {
       // modificar
-      this.pacienteService.modificar(paciente).subscribe(() => {
-        this.pacienteService.listar().subscribe((data) => {
+      this.pacienteService
+        .modificar(paciente)
+        .pipe(
+          switchMap(() => {
+            return this.pacienteService.listar();
+          })
+        )
+        .subscribe((data) => {
           this.pacienteService.setPacienteCambio(data);
           this.pacienteService.setMensajeCambio('SE MODIFICO');
         });
-      });
     } else {
       // registar
-      this.pacienteService.registrar(paciente).subscribe(() => {
-        this.pacienteService.listar().subscribe((data) => {
+      this.pacienteService
+        .registrar(paciente)
+        .pipe(
+          switchMap(() => {
+            return this.pacienteService.listar();
+          })
+        )
+        .subscribe((data) => {
           this.pacienteService.setPacienteCambio(data);
           this.pacienteService.setMensajeCambio('SE REGISTRO');
         });
-      });
     }
 
     this.router.navigate(['paciente']);
