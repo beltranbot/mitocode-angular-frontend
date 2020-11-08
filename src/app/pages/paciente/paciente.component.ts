@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { switchMap } from 'rxjs/operators';
 import { Paciente } from 'src/app/_model/paciente';
 import { PacienteService } from 'src/app/_service/paciente.service';
 
@@ -28,9 +29,21 @@ export class PacienteComponent implements OnInit {
     });
 
     this.pacienteService.getMensajeCambio().subscribe((data) => {
-      this.snackBar.open(data, 'AVISO', {duration: 2000});
+      this.snackBar.open(data, 'AVISO', { duration: 2000 });
     });
   }
 
-  eliminar(idPaciente) {}
+  eliminar(idPaciente: number) {
+    this.pacienteService
+      .eliminar(idPaciente)
+      .pipe(
+        switchMap(() => {
+          return this.pacienteService.listar();
+        })
+      )
+      .subscribe((data) => {
+        this.pacienteService.setPacienteCambio(data);
+        this.pacienteService.setMensajeCambio('SE ELIMINO');
+      });
+  }
 }
