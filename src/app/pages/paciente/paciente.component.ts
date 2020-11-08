@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,6 +16,7 @@ export class PacienteComponent implements OnInit {
   displayedColumns = ['idPaciente', 'nombres', 'apellidos', 'acciones'];
   dataSource: MatTableDataSource<Paciente>;
   @ViewChild(MatSort) sort: MatSort; //you can reference by alias or using the class as longs as there is only one occurence of it in the view
+  @ViewChild(MatPaginator) paginator : MatPaginator;
 
   constructor(
     private pacienteService: PacienteService,
@@ -56,5 +58,6 @@ export class PacienteComponent implements OnInit {
   crearTabla(data: Paciente[]) {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 }
