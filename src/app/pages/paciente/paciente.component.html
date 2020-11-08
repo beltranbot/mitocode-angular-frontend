@@ -1,3 +1,24 @@
-<ul>
-    <li *ngFor="let p of pacientes">{{ p.nombres }}</li>
-</ul>
+<mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="idPaciente">
+        <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.idPaciente }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nombres">
+        <mat-header-cell *matHeaderCellDef>Nombres</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.nombres }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="apellidos">
+        <mat-header-cell *matHeaderCellDef>Apellidos</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.apellidos }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+        <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+        <mat-cell *matCellDef="let row"></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

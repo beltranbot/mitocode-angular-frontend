@@ -1,5 +1,5 @@
-import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { Paciente } from 'src/app/_model/paciente';
 import { PacienteService } from 'src/app/_service/paciente.service';
 
@@ -9,10 +9,14 @@ import { PacienteService } from 'src/app/_service/paciente.service';
   styleUrls: ['./paciente.component.css'],
 })
 export class PacienteComponent implements OnInit {
-  pacientes: Paciente[];
+  displayedColumns = ['idPaciente', 'nombres', 'apellidos', 'acciones'];
+  dataSource: MatTableDataSource<Paciente>;
+
   constructor(private service: PacienteService) {}
 
   ngOnInit(): void {
-    this.service.listar().subscribe((data) => (this.pacientes = data));
+    this.service.listar().subscribe((data) => {
+      this.dataSource = new MatTableDataSource(data);
+    });
   }
 }
