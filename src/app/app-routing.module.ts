@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ConsultaEspecialComponent } from './pages/consulta-especial/consulta-especial.component';
 import { ConsultaComponent } from './pages/consulta/consulta.component';
 import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-edicion/especialidad-edicion.component';
 import { EspecialidadComponent } from './pages/especialidad/especialidad.component';
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'consulta',
     component: ConsultaComponent,
+  },
+  {
+    path: 'consulta-especial',
+    component: ConsultaEspecialComponent,
   },
   {
     path: 'examen',

@@ -1,0 +1,15 @@
+<mat-toolbar>Registro de Consulta Especial</mat-toolbar>
+
+<form class="example-container" [formGroup]="form" (ngSubmit)="aceptar()" #consultaForm="ngForm">
+    <mat-form-field>
+        <input type="text" placeholder="Paciente" matInput
+            [matAutocomplete]="autoPaciente"
+            [formControl]="myControlPaciente" formControlName="paciente">
+    </mat-form-field>
+
+    <mat-autocomplete #autoPaciente="matAutocomplete" [displayWith]="mostrarPaciente">
+        <mat-option *ngFor="let p of pacientesFiltrados$ | async" [value]="p">
+            {{p.nombres}} {{p.apellidos}}
+        </mat-option>
+    </mat-autocomplete>
+</form>
