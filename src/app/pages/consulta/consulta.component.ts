@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
+import { Consulta } from 'src/app/_model/consulta';
 import { DetalleConsulta } from 'src/app/_model/detalleConsulta';
 import { Especialidad } from 'src/app/_model/especialidad';
 import { Examen } from 'src/app/_model/examen';
@@ -10,6 +11,9 @@ import { EspecialidadService } from 'src/app/_service/especialidad.service';
 import { ExamenService } from 'src/app/_service/examen.service';
 import { MedicoService } from 'src/app/_service/medico.service';
 import { PacienteService } from 'src/app/_service/paciente.service';
+import * as moment from 'moment';
+import { ConsultaListaExamenDTO } from 'src/app/_dto/consultaListaExamenDTO';
+import { ConsultaService } from 'src/app/_service/consulta.service';
 
 @Component({
   selector: 'app-consulta',
@@ -41,7 +45,8 @@ export class ConsultaComponent implements OnInit {
     private medicoService: MedicoService,
     private examenService: ExamenService,
     private especialidadService: EspecialidadService,
-    private snackBar : MatSnackBar
+    private consultaService: ConsultaService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -100,5 +105,74 @@ export class ConsultaComponent implements OnInit {
 
   removerExamen(index: number) {
     this.examenesSeleccionados.splice(index, 1);
+  }
+
+  estadoBotonRegistrar() {
+    return (
+      this.detalleConsulta.length === 0 ||
+      this.idEspecialidadSeleccionado === 0 ||
+      this.idMedicoSeleccionado === 0 ||
+      this.idPacienteSeleccionado === 0
+    );
+  }
+
+  aceptar() {
+    let medico = new Medico();
+    medico.idMedico = this.idMedicoSeleccionado;
+    let especialidad = new Especialidad();
+    especialidad.idEspecialidad = this.idEspecialidadSeleccionado;
+    let paciente = new Paciente();
+    paciente.idPaciente = this.idPacienteSeleccionado;
+
+    let consulta = new Consulta();
+    consulta.medico = medico;
+    consulta.especialidad = especialidad;
+    consulta.paciente = paciente;
+    consulta.numConsultorio = 'C1';
+
+    // consulta.fecha = this.fechaSeleccionada;
+
+    // get data to isodate native way
+    /*
+    let tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    let localISOTime = (new Date(this.fechaSeleccionada.getTime() - tzoffset)).toISOString();
+    consulta.fecha = localISOTime; // ISODate
+    */
+    consulta.fecha = moment(this.fechaSeleccionada).format(
+      'YYYY-MM-DDTHH:mm:ss'
+    );
+    consulta.detalleConsulta = this.detalleConsulta;
+
+    let consultaListaExamenDTO = new ConsultaListaExamenDTO();
+    consultaListaExamenDTO.consulta = consulta;
+    consultaListaExamenDTO.lstExamen = this.examenesSeleccionados;
+
+    console.log(consultaListaExamenDTO);
+    
+    
+    this.consultaService
+      .registrarTransaccion(consultaListaExamenDTO)
+      .subscribe(() => {
+        this.snackBar.open('Se registró', 'Aviso', { duration: 2000 });
+        setTimeout(() => {
+          this.limpiarControles();
+        }, 2000);
+      });
+  }
+
+  limpiarControles() {
+    this.detalleConsulta = [];
+    this.examenesSeleccionados = [];
+    this.diagnostico = null;
+    this.tratamiento = null;
+    this.idPacienteSeleccionado = 0;
+    this.idEspecialidadSeleccionado = 0;
+    this.idMedicoSeleccionado = 0;
+    this.idExamenSeleccionado = 0;
+    this.fechaSeleccionada = new Date();
+    this.fechaSeleccionada.setHours(0);
+    this.fechaSeleccionada.setMinutes(0);
+    this.fechaSeleccionada.setSeconds(0);
+    this.fechaSeleccionada.setMilliseconds(0);
   }
 }
