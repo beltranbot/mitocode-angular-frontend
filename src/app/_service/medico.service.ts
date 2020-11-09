@@ -3,35 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Medico } from '../_model/medico';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+import { GenericService } from './generic.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class MedicoService {
+export class MedicoService extends GenericService<Medico> {
   private medicoCambio = new Subject<Medico[]>();
   private mensajeCambio = new Subject<string>();
-
-  private url: string = `${environment.HOST}/medicos`;
-  constructor(private http: HttpClient) {}
-
-  listar() {
-    return this.http.get<Medico[]>(this.url);
-  }
-
-  listarPorId(id: number) {
-    return this.http.get<Medico>(`${this.url}/${id}`);
-  }
-
-  registrar(medico: Medico) {
-    return this.http.post(this.url, medico);
-  }
-
-  modificar(medico: Medico) {
-    return this.http.put(this.url, medico);
-  }
-
-  eliminar(id: number) {
-    return this.http.delete(`${this.url}/${id}`);
+  constructor(protected http: HttpClient) {
+    super(http, `${environment.HOST}/medicos`);
   }
 
   //** get set subjects */
