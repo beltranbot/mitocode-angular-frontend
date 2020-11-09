@@ -11,9 +11,11 @@ import { PacienteEdicionComponent } from './pages/paciente/paciente-edicion/paci
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MedicoComponent } from './pages/medico/medico.component';
 import { MedicoDialogoComponent } from './pages/medico/medico-dialogo/medico-dialogo.component';
+import { ExamenComponent } from './pages/examen/examen.component';
+import { ExamenEdicionComponent } from './pages/examen/examen-edicion/examen-edicion.component';
 
 @NgModule({
-  declarations: [AppComponent, PacienteComponent, PacienteEdicionComponent, MedicoComponent, MedicoDialogoComponent],
+  declarations: [AppComponent, PacienteComponent, PacienteEdicionComponent, MedicoComponent, MedicoDialogoComponent, ExamenComponent, ExamenEdicionComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
