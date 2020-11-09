@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { DetalleConsulta } from 'src/app/_model/detalleConsulta';
 import { Especialidad } from 'src/app/_model/especialidad';
@@ -33,12 +34,14 @@ export class ConsultaComponent implements OnInit {
   tratamiento: string;
 
   detalleConsulta: DetalleConsulta[] = [];
+  examenesSeleccionados: Examen[] = [];
 
   constructor(
     private pacienteService: PacienteService,
     private medicoService: MedicoService,
     private examenService: ExamenService,
-    private especialidadService: EspecialidadService
+    private especialidadService: EspecialidadService,
+    private snackBar : MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -69,5 +72,33 @@ export class ConsultaComponent implements OnInit {
 
   removerDiagnostico(index: number) {
     this.detalleConsulta.splice(index, 1);
+  }
+
+  agregarExamen() {
+    if (this.idExamenSeleccionado > 0) {
+      let cont = 0;
+      for (let i = 0; i < this.examenesSeleccionados.length; i++) {
+        let examen = this.examenesSeleccionados[i];
+        if (examen.idExamen === this.idExamenSeleccionado) {
+          cont++;
+          break;
+        }
+      }
+
+      if (cont > 0) {
+        let mensaje = 'El examen se encuentra en la lista';
+        this.snackBar.open(mensaje, 'AVISO', { duration: 2000 });
+      } else {
+        this.examenService
+          .listarPorId(this.idExamenSeleccionado)
+          .subscribe((data) => {
+            this.examenesSeleccionados.push(data);
+          });
+      }
+    }
+  }
+
+  removerExamen(index: number) {
+    this.examenesSeleccionados.splice(index, 1);
   }
 }
