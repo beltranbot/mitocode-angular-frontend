@@ -16,6 +16,14 @@ import {
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatPaginatorImpl } from './mat-paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  DateAdapter,
+  MatNativeDateModule,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import { CustomDateAdapter } from './custom-adapter';
 
 @NgModule({
   declarations: [],
@@ -34,7 +42,14 @@ import { MatPaginatorImpl } from './mat-paginator';
     MatDialogModule,
     MatSortModule,
     MatPaginatorModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
-  providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorImpl }],
+  providers: [
+    { provide: MatPaginatorIntl, useClass: MatPaginatorImpl },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-Es' },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+  ],
 })
 export class MaterialModule {}

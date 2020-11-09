@@ -15,9 +15,21 @@ import { ExamenComponent } from './pages/examen/examen.component';
 import { ExamenEdicionComponent } from './pages/examen/examen-edicion/examen-edicion.component';
 import { EspecialidadComponent } from './pages/especialidad/especialidad.component';
 import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-edicion/especialidad-edicion.component';
+import { ConsultaComponent } from './pages/consulta/consulta.component';
 
 @NgModule({
-  declarations: [AppComponent, PacienteComponent, PacienteEdicionComponent, MedicoComponent, MedicoDialogoComponent, ExamenComponent, ExamenEdicionComponent, EspecialidadComponent, EspecialidadEdicionComponent],
+  declarations: [
+    AppComponent,
+    PacienteComponent,
+    PacienteEdicionComponent,
+    MedicoComponent,
+    MedicoDialogoComponent,
+    ExamenComponent,
+    ExamenEdicionComponent,
+    EspecialidadComponent,
+    EspecialidadEdicionComponent,
+    ConsultaComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,7 +37,7 @@ import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-
     HttpClientModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

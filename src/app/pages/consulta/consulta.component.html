@@ -1,0 +1,34 @@
+<mat-toolbar>Registro de Consulta</mat-toolbar>
+
+<div class="example-container">
+    <mat-form-field>
+        <mat-select placeholder="Selecciona paciente" [(value)]="idPacienteSeleccionado">
+            <mat-option *ngFor="let p of (pacientes$) | async" [value]="p.idPaciente">
+                {{ p.nombres }} {{ p.apellidos }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select placeholder="Selecciona medico" [(value)]="idMedicoSeleccionado">
+            <mat-option *ngFor="let m of (medicos$) | async" [value]="m.idMedico">
+                {{ m.nombres }} {{ m.apellidos }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select placeholder="Selecciona especialidad" [(value)]="idEspecialidadSeleccionado">
+            <mat-option *ngFor="let e of (especialidades$) | async" [value]="e.idEspecialidad">
+                {{ e.nombre }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Escoge una fecha" [max]="maxFecha"
+            [(ngModel)]="fechaSeleccionada" [max]="maxFecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+</div>
