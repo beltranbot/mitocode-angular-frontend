@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DetalleConsulta } from 'src/app/_model/detalleConsulta';
 import { Especialidad } from 'src/app/_model/especialidad';
 import { Examen } from 'src/app/_model/examen';
 import { Medico } from 'src/app/_model/medico';
@@ -28,6 +29,11 @@ export class ConsultaComponent implements OnInit {
   maxFecha: Date = new Date();
   fechaSeleccionada: Date = new Date();
 
+  diagnostico: string;
+  tratamiento: string;
+
+  detalleConsulta: DetalleConsulta[] = [];
+
   constructor(
     private pacienteService: PacienteService,
     private medicoService: MedicoService,
@@ -46,5 +52,22 @@ export class ConsultaComponent implements OnInit {
   listarPacientes() {
     // this.pacienteService.listar().subscribe(data => this.pacientes = data)
     this.pacientes$ = this.pacienteService.listar();
+  }
+
+  agregar() {
+    if (this.diagnostico != null && this.tratamiento != null) {
+      let det = new DetalleConsulta();
+      det.diagnostico = this.diagnostico;
+      det.tratamiento = this.tratamiento;
+
+      this.detalleConsulta.push(det);
+
+      this.diagnostico = null;
+      this.tratamiento = null;
+    }
+  }
+
+  removerDiagnostico(index: number) {
+    this.detalleConsulta.splice(index, 1);
   }
 }

@@ -31,4 +31,31 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Diagnostico" [(ngModel)]="diagnostico">
+    </mat-form-field>
+
+    <mat-form-field>
+        <textarea matInput placeholder="Tratamiento" [(ngModel)]="tratamiento"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="agregar()">Agregar Detaller</button>
+
+    <mat-expansion-panel *ngFor="let d of detalleConsulta; let i=index">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{ i + 1 }} {{d.diagnostico}}
+            </mat-panel-title>
+            <mat-panel-description>
+                Ver Tratamiento
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Tratamiento" value="{{d.tratamiento}}"></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="warn" (click)="removerDiagnostico(i)">Remover</button>
+    </mat-expansion-panel>
 </div>

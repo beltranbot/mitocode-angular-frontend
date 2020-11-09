@@ -24,6 +24,7 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { CustomDateAdapter } from './custom-adapter';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [],
@@ -45,6 +46,7 @@ import { CustomDateAdapter } from './custom-adapter';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatExpansionModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: MatPaginatorImpl },
