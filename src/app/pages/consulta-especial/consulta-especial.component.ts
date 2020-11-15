@@ -142,7 +142,10 @@ export class ConsultaEspecialComponent implements OnInit {
   }
 
   agregar() {
-    if (this.form.value["diagnostico"] != null && this.form.value["tratamiento"] != null) {
+    if (
+      (this.form.value["diagnostico"] != null && this.form.value["diagnostico"].length > 0) &&
+      (this.form.value["tratamiento"] != null && this.form.value["tratamiento"].length > 0)
+    ) {
       let det = new DetalleConsulta();
       det.diagnostico = this.form.value["diagnostico"];
       det.tratamiento = this.form.value["tratamiento"];

@@ -65,4 +65,12 @@
         <button mat-raised-button color="warn" type="button" (click)="removerDiagnostico(i)">Remover</button>
     </mat-expansion-panel>
 
+    <mat-form-field>
+        <mat-select placeholder="Examen" [(value)]="examenSeleccionado">
+            <mat-option *ngFor="let ex of examenes" [value]="ex">
+                {{ ex.nombre }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
 </form>
