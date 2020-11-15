@@ -37,7 +37,6 @@ export class ConsultaEspecialComponent implements OnInit {
   especialidadSeleccionada: Especialidad;
   examenSeleccionado: Examen;
 
-  fechaSeleccionada: Date = new Date();
   maxFecha: Date = new Date();
 
   // utiles para autocomplete
@@ -45,7 +44,7 @@ export class ConsultaEspecialComponent implements OnInit {
   pacientesFiltrados$: Observable<Paciente[]>;
   myControlMedico: FormControl = new FormControl();
   medicosFiltrados$: Observable<Medico[]>;
-
+  myControlFecha: FormControl = new FormControl(new Date());
   constructor(
     private pacienteService: PacienteService,
     private medicoService: MedicoService,
@@ -60,7 +59,7 @@ export class ConsultaEspecialComponent implements OnInit {
       paciente: this.myControlPaciente,
       especialidad: new FormControl(),
       medico: this.myControlMedico,
-      fecha: new FormControl(new Date()),
+      fecha: this.myControlFecha,
       diagnostico: new FormControl(''),
       tratamiento: new FormControl(''),
     });
@@ -141,5 +140,24 @@ export class ConsultaEspecialComponent implements OnInit {
       this.examenes = data;
     })
   }
+
+  agregar() {
+    if (this.form.value["diagnostico"] != null && this.form.value["tratamiento"] != null) {
+      let det = new DetalleConsulta();
+      det.diagnostico = this.form.value["diagnostico"];
+      det.tratamiento = this.form.value["tratamiento"];
+      this.detalleConsulta.push(det);
+      this.form.controls["diagnostico"].reset()
+      this.form.controls["tratamiento"].reset()
+    } else {
+      this.mensaje = `Debe agregar un diagnóstico y tratamiento`;
+      this.snackBar.open(this.mensaje, "Aviso", { duration: 2000 })
+    }
+  }
+
+  removerDiagnostico(index: number) {
+    this.detalleConsulta.splice(index, 1)
+  }
+
   aceptar() {}
 }
