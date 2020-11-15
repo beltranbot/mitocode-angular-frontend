@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DetalleConsulta } from 'src/app/_model/detalleConsulta';
+import { Especialidad } from 'src/app/_model/especialidad';
+import { Examen } from 'src/app/_model/examen';
 import { Medico } from 'src/app/_model/medico';
 import { Paciente } from 'src/app/_model/paciente';
+import { ConsultaService } from 'src/app/_service/consulta.service';
+import { EspecialidadService } from 'src/app/_service/especialidad.service';
+import { ExamenService } from 'src/app/_service/examen.service';
 import { MedicoService } from 'src/app/_service/medico.service';
 import { PacienteService } from 'src/app/_service/paciente.service';
 
@@ -16,6 +23,22 @@ export class ConsultaEspecialComponent implements OnInit {
   form: FormGroup;
   pacientes: Paciente[];
   medicos: Medico[];
+  especialidades: Especialidad[];
+  examenes: Examen[];
+
+  detalleConsulta: DetalleConsulta[] = [];
+  examenesSeleccionados: Examen[] = [];
+
+  diagnostico: string;
+  tratamiento: string;
+  mensaje: string;
+
+  medicoSeleccionado: Medico;
+  especialidadSeleccionada: Especialidad;
+  examenSeleccionado: Examen;
+
+  fechaSeleccionada: Date = new Date();
+  maxFecha: Date = new Date();
 
   // utiles para autocomplete
   myControlPaciente: FormControl = new FormControl();
@@ -25,7 +48,11 @@ export class ConsultaEspecialComponent implements OnInit {
 
   constructor(
     private pacienteService: PacienteService,
-    private medicoService: MedicoService
+    private medicoService: MedicoService,
+    private especialidadService: EspecialidadService,
+    private examenService: ExamenService,
+    private consultaService: ConsultaService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +67,8 @@ export class ConsultaEspecialComponent implements OnInit {
 
     this.listarPacientes();
     this.listarMedicos();
+    this.listarEspecialidad();
+    this.listarExamenes();
     this.pacientesFiltrados$ = this.myControlPaciente.valueChanges.pipe(
       map((val) => this.filtrarPacientes(val))
     );
@@ -101,5 +130,16 @@ export class ConsultaEspecialComponent implements OnInit {
     return val ? `${val.nombres} ${val.apellidos}` : val;
   }
 
+  listarEspecialidad() {
+    this.especialidadService.listar().subscribe(data => {
+      this.especialidades = data;
+    })
+  }
+
+  listarExamenes () {
+    this.examenService.listar().subscribe(data => {
+      this.examenes = data;
+    })
+  }
   aceptar() {}
 }

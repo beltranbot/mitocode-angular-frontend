@@ -23,4 +23,19 @@
 
     </mat-form-field>
 
+    <mat-form-field>
+        <mat-select placeholder="Especialidades" [(value)]="especialidadSeleccionada" formControlName="especialidad">
+            <mat-option *ngFor="let e of especialidades" value="e">
+                {{e.nombre}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Escoge una fecha" [max]="maxFecha"
+            formControlName="fecha" [(ngModel)]="fechaSeleccionada">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
 </form>
