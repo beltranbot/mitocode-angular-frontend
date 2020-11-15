@@ -2,14 +2,25 @@
 
 <form class="example-container" [formGroup]="form" (ngSubmit)="aceptar()" #consultaForm="ngForm">
     <mat-form-field>
-        <input type="text" placeholder="Paciente" matInput
-            [matAutocomplete]="autoPaciente"
+        <input type="text" placeholder="Paciente" matInput [matAutocomplete]="autoPaciente"
             [formControl]="myControlPaciente" formControlName="paciente">
+
+        <mat-autocomplete #autoPaciente="matAutocomplete" [displayWith]="mostrarPaciente">
+            <mat-option *ngFor="let p of pacientesFiltrados$ | async" [value]="p">
+                {{p.nombres}} {{p.apellidos}}
+            </mat-option>
+        </mat-autocomplete>
     </mat-form-field>
 
-    <mat-autocomplete #autoPaciente="matAutocomplete" [displayWith]="mostrarPaciente">
-        <mat-option *ngFor="let p of pacientesFiltrados$ | async" [value]="p">
-            {{p.nombres}} {{p.apellidos}}
-        </mat-option>
-    </mat-autocomplete>
+    <mat-form-field>
+        <input type="text" placeholder="Medico" matInput [matAutocomplete]="autoMedico" [formControl]="myControlMedico"
+            formControlName="medico">
+        <mat-autocomplete #autoMedico="matAutocomplete" [displayWith]="mostrarMedico">
+            <mat-option *ngFor="let m of medicosFiltrados$ | async" [value]="m">
+                {{m.nombres}} {{m.apellidos}}
+            </mat-option>
+        </mat-autocomplete>
+
+    </mat-form-field>
+
 </form>
