@@ -58,7 +58,6 @@ export class ConsultaComponent implements OnInit {
   }
 
   listarPacientes() {
-    // this.pacienteService.listar().subscribe(data => this.pacientes = data)
     this.pacientes$ = this.pacienteService.listar();
   }
 

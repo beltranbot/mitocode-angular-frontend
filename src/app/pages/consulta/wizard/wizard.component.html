@@ -1,0 +1,97 @@
+<mat-toolbar>Registro de Consulta Wizard</mat-toolbar>
+
+<mat-slide-toggle (toggleChange)="isLinear = !isLinear">
+    {{ !isLinear ? 'Modo lineal deshabilitado' : 'Modo lineal activado'}}
+</mat-slide-toggle>
+
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="primerFormGroup">
+        <ng-template matStepLabel>Principal</ng-template>
+
+        <form [formGroup]="primerFormGroup">
+            <mat-form-field>
+                <mat-select placeholder="Paciente" [(value)]="pacienteSeleccionado" formControlName="cboPaciente"
+                    (selectionChange)="seleccionarPaciente($event)">
+                    <mat-option *ngFor="let p of pacientes" [value]="p">
+                        {{p.nombres}} {{p.apellidos}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-select placeholder="Especialidad" [(value)]="especialidadSeleccionada"
+                    (selectionChange)="seleccionarEspecialidad($event)">
+                    <mat-option *ngFor="let e of especialidades" [value]="e">{{e.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Escoge una fecha" [max]="maxFecha" formControlName="fecha">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <br>
+
+            <mat-form-field>
+                <input matInput placeholder="Diagnostico" formControlName="diagnostico">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Tratamiento" formControlName="tratamiento">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="button" (click)="agregar()">
+                <mat-icon>add</mat-icon>
+            </button>
+            
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let d of detalleConsulta; let i=index">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{d.diagnostico}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Ver Tratamiento
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <mat-form-field>
+                        <textarea matInput placeholder="Tratamiento" value="{{d.tratamiento}}"></textarea>
+                    </mat-form-field>
+                    <br>
+                    <button mat-raised-button color="warn" type="button" (click)="removedDiagnostico(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-expansion-panel>
+
+                <mat-form-field>
+                    <mat-select placeholder="Examen" [(value)]="examenSeleccionado">
+                        <mat-option *ngFor="let ex of examenes" [value]="ex">
+                            {{ex.nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" type="button" (click)="agregarExamen()">
+                    <mat-icon>add</mat-icon>
+                </button>
+
+                <mat-toolbar *ngFor="let d of examenesSeleccionados; let i=index">
+                    {{d.nombre}}
+                    <span class="example-spacer"></span>
+                    <button mat-raised-button color="warn" type="button" (click)="removerExamen(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-toolbar>
+            </mat-accordion>
+        </form>
+    </mat-step>
+
+    <mat-step [stepControl]="segundoFormGroup">
+        <ng-template matStepLabel>Consultorio</ng-template>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>Confirma</ng-template>
+    </mat-step>
+</mat-horizontal-stepper>

@@ -27,6 +27,8 @@ import { CustomDateAdapter } from './custom-adapter';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [],
@@ -50,7 +52,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatNativeDateModule,
     MatExpansionModule,
     MatListModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSlideToggleModule,
+    MatStepperModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: MatPaginatorImpl },
