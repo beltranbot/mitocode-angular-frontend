@@ -24,8 +24,8 @@
     </mat-form-field>
 
     <mat-form-field>
-        <mat-select placeholder="Especialidades" [(value)]="especialidadSeleccionada" formControlName="especialidad">
-            <mat-option *ngFor="let e of especialidades" value="e">
+        <mat-select placeholder="Especialidades" formControlName="especialidad">
+            <mat-option *ngFor="let e of especialidades" [value]="e">
                 {{e.nombre}}
             </mat-option>
         </mat-select>
@@ -72,5 +72,15 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
+
+    <button mat-raised-button color="primary" type="button" (click)="agregarExamen()">Agregar Examen</button>
+
+    <mat-toolbar *ngFor="let e of examenesSeleccionados; let i=index">
+        {{e.nombre}}
+        <span class="example-space"></span>
+        <button mat-raised-button color="warn" type="button" (click)="removerExamen(i)">Remover</button>
+    </mat-toolbar>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="isRegistrarDisabled()">Registrar</button>
 
 </form>

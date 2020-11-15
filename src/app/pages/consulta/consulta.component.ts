@@ -147,9 +147,6 @@ export class ConsultaComponent implements OnInit {
     consultaListaExamenDTO.consulta = consulta;
     consultaListaExamenDTO.lstExamen = this.examenesSeleccionados;
 
-    console.log(consultaListaExamenDTO);
-    
-    
     this.consultaService
       .registrarTransaccion(consultaListaExamenDTO)
       .subscribe(() => {
