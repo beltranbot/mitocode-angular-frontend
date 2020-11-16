@@ -21,4 +21,8 @@ export class ConsultaService extends GenericService<Consulta> {
   buscar(filtroConsulta: FiltroConsultaDTO) {
     return this.http.post<Consulta[]>(`${this.url}/buscar`, filtroConsulta);
   }
+
+  listarExamenesPorConsulta(idConsulta: number) {
+    return this.http.get<ConsultaListaExamenDTO[]>(`${environment.HOST}/consultaexamenes/${idConsulta}`)
+  }
 }

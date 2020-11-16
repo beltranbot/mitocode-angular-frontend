@@ -7,6 +7,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Consulta } from 'src/app/_model/consulta';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { BuscarDialogoComponent } from './buscar-dialogo/buscar-dialogo.component';
 
 @Component({
   selector: 'app-buscar',
@@ -29,7 +31,10 @@ export class BuscarComponent implements OnInit {
   ];
   dataSource: MatTableDataSource<Consulta>;
 
-  constructor(private consultaservice: ConsultaService) {}
+  constructor(
+    private consultaservice: ConsultaService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -72,8 +77,8 @@ export class BuscarComponent implements OnInit {
   }
 
   verDetalle(consulta: Consulta) {
-    // this.dialog.open(BuscarDialogoComponent, {
-    //   data: consulta
-    // });
+    this.dialog.open(BuscarDialogoComponent, {
+      data: consulta
+    });
   }
 }
