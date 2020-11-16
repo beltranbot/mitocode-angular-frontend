@@ -29,6 +29,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from "@angular/material/grid-list"
 
 @NgModule({
   declarations: [],
@@ -55,6 +57,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatStepperModule,
+    MatCardModule,
+    MatGridListModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: MatPaginatorImpl },

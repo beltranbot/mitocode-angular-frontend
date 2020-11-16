@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatStepper } from '@angular/material/stepper';
+import { Consulta } from 'src/app/_model/consulta';
 import { DetalleConsulta } from 'src/app/_model/detalleConsulta';
 import { Especialidad } from 'src/app/_model/especialidad';
 import { Examen } from 'src/app/_model/examen';
@@ -16,6 +18,8 @@ import { EspecialidadService } from 'src/app/_service/especialidad.service';
 import { ExamenService } from 'src/app/_service/examen.service';
 import { MedicoService } from 'src/app/_service/medico.service';
 import { PacienteService } from 'src/app/_service/paciente.service';
+import * as moment from 'moment'
+import { ConsultaListaExamenDTO } from 'src/app/_dto/consultaListaExamenDTO';
 
 @Component({
   selector: 'app-wizard',
@@ -23,6 +27,8 @@ import { PacienteService } from 'src/app/_service/paciente.service';
   styleUrls: ['./wizard.component.css'],
 })
 export class WizardComponent implements OnInit {
+  @ViewChild("stepper") stepper : MatStepper;
+
   isLinear: boolean = false;
   primerFormGroup: FormGroup;
   segundoFormGroup: FormGroup;
@@ -33,7 +39,7 @@ export class WizardComponent implements OnInit {
   examenes: Examen[] = [];
 
   fechaSeleccionada: Date = new Date();
-  maxfecah: Date = new Date();
+  maxFecha: Date = new Date();
 
   diagnostico: string;
   tratamiento: string;
@@ -46,7 +52,6 @@ export class WizardComponent implements OnInit {
   medicoSeleccionado: Medico;
   especialidadSeleccionada: Especialidad;
   pacienteSeleccionado: Paciente;
-  examenSeleccionado: Examen;
 
   consultorios: number[] = [];
   consultorioSeleccionado: number = 0;
@@ -105,7 +110,7 @@ export class WizardComponent implements OnInit {
   }
 
   listarConsultorios() {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 1; i <= 20; i++) {
       this.consultorios.push(i);
     }
   }
@@ -118,8 +123,12 @@ export class WizardComponent implements OnInit {
     this.especialidadSeleccionada = e.value;
   }
 
-  seleccionarMedico(e: any) {
-    this.medicoSeleccionado = e.value;
+  seleccionarMedico(medico: Medico) {
+    this.medicoSeleccionado = medico;
+  }
+
+  seleccionarConsultorio(c: number) {
+    this.consultorioSeleccionado = c;
   }
 
   agregar() {
@@ -169,5 +178,66 @@ export class WizardComponent implements OnInit {
 
   removerExamen(index: number) {
     this.examenesSeleccionados.splice(index, 1);
+  }
+
+  nextManualStep() {    
+    if (this.consultorioSeleccionado > 0) {
+      this.stepper.linear = false;
+      this.stepper.next()
+    } else {
+      this.snackBar.open('DEBES SELECCIONAR ASIENTO', 'INFO', {duration: 2000})
+    }
+  }
+
+  isRegistrarDisabled() {
+    return (
+      this.detalleConsulta.length === 0 ||
+      this.primerFormGroup.value['cboPaciente'] === null ||
+      typeof this.primerFormGroup.value['cboPaciente'] !== 'object' ||
+      this.primerFormGroup.value['cboPaciente'].idPaciente === 0 ||
+      this.medicoSeleccionado === null ||
+      this.especialidadSeleccionada === null ||
+      this.consultorioSeleccionado === 0
+    );
+  }
+
+  registrar() {
+    let consulta = new Consulta();
+    consulta.paciente = this.primerFormGroup.value['cboPaciente'];
+    consulta.medico = this.medicoSeleccionado;
+    consulta.especialidad = this.especialidadSeleccionada;
+    consulta.numConsultorio = `c${this.consultorioSeleccionado}`;
+    consulta.fecha = moment(this.primerFormGroup.value['fecha']).format(
+      'YYYY-MM-DDTHH:mm:ss'
+    );
+    consulta.detalleConsulta = this.detalleConsulta;
+    let consultaListaExamenDTO = new ConsultaListaExamenDTO();
+    consultaListaExamenDTO.consulta = consulta;
+    consultaListaExamenDTO.lstExamen = this.examenesSeleccionados;
+    
+
+    this.consultaService.registrarTransaccion(consultaListaExamenDTO).subscribe(() => {
+      this.snackBar.open("Se registro", "Aviso", {duration: 2000});
+
+      setTimeout(() => {
+        this.limpiarControles();
+      }, 200)
+    })
+  }
+
+  limpiarControles() {
+    this.detalleConsulta = [];
+    this.examenesSeleccionados = [];
+    this.primerFormGroup.controls['diagnostico'].reset();
+    this.primerFormGroup.controls['tratamiento'].reset();
+    this.primerFormGroup.controls['cboPaciente'].reset();
+    this.medicoSeleccionado = undefined;
+    this.especialidadSeleccionada= undefined;
+    this.consultorioSeleccionado = 0;
+    this.primerFormGroup.controls['fecha'].setValue(new Date());
+    this.consultorioSeleccionado = 0; 
+    this.examenSeleccionado = null;
+    this.mensaje = '';
+    this.stepper.reset();
   }
 }

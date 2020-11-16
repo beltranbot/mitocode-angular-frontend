@@ -18,6 +18,7 @@ import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-
 import { ConsultaComponent } from './pages/consulta/consulta.component';
 import { ConsultaEspecialComponent } from './pages/consulta-especial/consulta-especial.component';
 import { WizardComponent } from './pages/consulta/wizard/wizard.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { WizardComponent } from './pages/consulta/wizard/wizard.component';
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent],
