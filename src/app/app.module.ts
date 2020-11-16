@@ -19,6 +19,7 @@ import { ConsultaComponent } from './pages/consulta/consulta.component';
 import { ConsultaEspecialComponent } from './pages/consulta-especial/consulta-especial.component';
 import { WizardComponent } from './pages/consulta/wizard/wizard.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BuscarComponent } from './pages/buscar/buscar.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ConsultaComponent,
     ConsultaEspecialComponent,
     WizardComponent,
+    BuscarComponent,
   ],
   imports: [
     BrowserModule,
