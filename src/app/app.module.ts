@@ -21,6 +21,7 @@ import { WizardComponent } from './pages/consulta/wizard/wizard.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BuscarComponent } from './pages/buscar/buscar.component';
 import { BuscarDialogoComponent } from './pages/buscar/buscar-dialogo/buscar-dialogo.component';
+import { ReporteComponent } from './pages/reporte/reporte.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { BuscarDialogoComponent } from './pages/buscar/buscar-dialogo/buscar-dia
     WizardComponent,
     BuscarComponent,
     BuscarDialogoComponent,
+    ReporteComponent,
   ],
   imports: [
     BrowserModule,
