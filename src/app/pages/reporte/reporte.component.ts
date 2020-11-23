@@ -11,6 +11,8 @@ export class ReporteComponent implements OnInit {
   chart: any;
   tipo: string;
 
+  pdfSrc: string;
+
   constructor(private consultaService: ConsultaService) {}
 
   ngOnInit(): void {
@@ -73,6 +75,28 @@ export class ReporteComponent implements OnInit {
           },
         },
       });
+    });
+  }
+
+  generarReporte() {
+    this.consultaService.generarReporte().subscribe((data) => {
+      let reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.pdfSrc = e.target.result;
+      };
+      reader.readAsArrayBuffer(data);
+    });
+  }
+
+  descargarReporte() {
+    this.consultaService.generarReporte().subscribe((data) => {
+      const url = window.URL.createObjectURL(data);
+      const a = document.createElement('a');
+      a.setAttribute('style', 'display:none');
+      document.body.appendChild(a);
+      a.href = url;
+      a.download = 'archivo.pdf';
+      a.click();
     });
   }
 }
