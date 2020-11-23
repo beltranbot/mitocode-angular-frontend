@@ -21,6 +21,10 @@ export class PacienteService extends GenericService<Paciente> {
     return this.pacienteCambio.asObservable();
   }
 
+  listarPageable(p: number, s: number) {
+    return this.http.get<any>(`${this.url}/pageable?page=${p}&size=${s}`);
+  }
+
   setPacienteCambio(pacientes: Paciente[]) {
     this.pacienteCambio.next(pacientes);
   }

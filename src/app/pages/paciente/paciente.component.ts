@@ -16,7 +16,8 @@ export class PacienteComponent implements OnInit {
   displayedColumns = ['idPaciente', 'nombres', 'apellidos', 'acciones'];
   dataSource: MatTableDataSource<Paciente>;
   @ViewChild(MatSort) sort: MatSort; //you can reference by alias or using the class as longs as there is only one occurence of it in the view
-  @ViewChild(MatPaginator) paginator : MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  cantidad: number = 0;
 
   constructor(
     private pacienteService: PacienteService,
@@ -24,8 +25,10 @@ export class PacienteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.pacienteService.listar().subscribe((data) => {
-      this.crearTabla(data);
+    this.pacienteService.listarPageable(0, 10).subscribe((data) => {
+      this.cantidad = data.totalElements;
+      this.dataSource = new MatTableDataSource(data.content);
+      this.dataSource.sort = this.sort;
     });
 
     this.pacienteService.getPacienteCambio().subscribe((data) => {
@@ -59,5 +62,15 @@ export class PacienteComponent implements OnInit {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  mostrarMas(e: any) {
+    this.pacienteService
+      .listarPageable(e.pageIndex, e.pageSize)
+      .subscribe((data) => {
+        this.cantidad = data.totalElements;
+        this.dataSource = new MatTableDataSource(data.content);
+        this.dataSource.sort = this.sort;
+      });
   }
 }
