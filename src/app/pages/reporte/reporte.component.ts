@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConsultaService } from 'src/app/_service/consulta.service';
 import { Chart } from 'chart.js';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reporte',
@@ -13,11 +14,36 @@ export class ReporteComponent implements OnInit {
 
   pdfSrc: string;
 
-  constructor(private consultaService: ConsultaService) {}
+  nombreArchivo: string;
+  archivosSeleccionados: FileList;
+  imagenEstado: boolean = false;
+  imagenData: any;
+
+  constructor(
+    private consultaService: ConsultaService,
+    private sanitization: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
+    this.consultaService.leerArchivo().subscribe((data) => {
+      this.convertir(data);
+    });
     this.tipo = 'line';
     this.dibujar();
+  }
+
+  convertir(data: any) {
+    let reader = new FileReader();
+    reader.readAsDataURL(data);
+    reader.onloadend = () => {
+      let base64 = reader.result;
+      this.sanar(base64);
+    };
+  }
+
+  sanar(base64: any) {
+    this.imagenData = this.sanitization.bypassSecurityTrustResourceUrl(base64);
+    this.imagenEstado = true;
   }
 
   cambiar(grafica: string) {
@@ -98,5 +124,16 @@ export class ReporteComponent implements OnInit {
       a.download = 'archivo.pdf';
       a.click();
     });
+  }
+
+  seleccionarArchivo(e: any) {
+    this.nombreArchivo = e.target.files[0].name;
+    this.archivosSeleccionados = e.target.files;
+  }
+
+  subirArchivo() {
+    this.consultaService
+      .guardarArchivo(this.archivosSeleccionados.item(0))
+      .subscribe();
   }
 }
